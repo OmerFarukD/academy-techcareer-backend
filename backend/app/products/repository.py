@@ -12,8 +12,7 @@ class ProductRepository:
         obj = Product(**data)
         self.db.add(obj)
         await self.db.commit()
-        await self.db.refresh(obj)
-        return obj
+        return await self.get(obj.id)
 
     async def get(self, product_id: int) -> Product | None:
         result = await self.db.execute(
