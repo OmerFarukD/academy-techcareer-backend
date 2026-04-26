@@ -5,6 +5,7 @@ from app.categories.model import Category
 from app.product_images.model import ProductImage
 from app.products.model import Product
 from app.cart.model import Cart, CartItem
+from app.orders.model import Order, OrderItem
 from app.products.repository import ProductRepository
 from app.products.service import ProductService
 from app.products.schema import ProductCreate

@@ -4,6 +4,7 @@ from app.core.database import Base
 from app.roles.model import Role
 from app.users.model import User
 from app.cart.model import Cart, CartItem
+from app.orders.model import Order, OrderItem
 from app.users.repository import UserRepository
 from app.users.service import UserService
 from app.users.schema import UserCreate
