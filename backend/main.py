@@ -17,9 +17,11 @@ async def seed_roles():
         await db.commit()
 
 
+os.makedirs("uploads/products", exist_ok=True)
+
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    os.makedirs("uploads/products", exist_ok=True)
     await seed_roles()
     yield
 
