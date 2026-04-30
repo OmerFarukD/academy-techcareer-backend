@@ -1,0 +1,30 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git init *)",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(pip install *)",
+      "Bash(python -c \"from app.core.config import settings; print\\(settings.DATABASE_URL\\)\")",
+      "Bash(python -m pytest tests/test_database.py -v)",
+      "Bash(pytest tests/test_database.py -v)",
+      "Bash(python -m pytest tests/test_security.py -v)",
+      "Bash(python -c \"import bcrypt; print\\(bcrypt.__version__\\)\")",
+      "Bash(pip show *)",
+      "Bash(python -c \"import bcrypt; h = bcrypt.hashpw\\(b'secret123', bcrypt.gensalt\\(\\)\\); print\\(bcrypt.checkpw\\(b'secret123', h\\)\\)\")",
+      "Bash(python -m pytest tests/test_auth.py -v)",
+      "Bash(python -m pytest tests/ -v)",
+      "Bash(pytest tests/ -v)",
+      "Bash(python *)",
+      "Bash(alembic init *)",
+      "Bash(pg_isready *)",
+      "PowerShell(& \"C:\\\\Program Files\\\\PostgreSQL\\\\17\\\\bin\\\\pg_isready.exe\" -h localhost -p 5433 2>&1)",
+      "PowerShell(& \"C:\\\\Program Files\\\\PostgreSQL\\\\16\\\\bin\\\\psql.exe\" -U postgres -h localhost -p 5433 -c \"SELECT version\\(\\);\" 2>&1)",
+      "Read(//c/Program Files/PostgreSQL/16/bin//**)",
+      "Read(//c/Program Files/PostgreSQL/18/**)",
+      "Bash(alembic upgrade *)",
+      "Bash(npx tsc *)",
+      "Bash(npx vite *)"
+    ]
+  }
+}

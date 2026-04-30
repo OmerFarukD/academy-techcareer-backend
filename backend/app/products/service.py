@@ -14,3 +14,9 @@ class ProductService:
 
     async def get_all(self):
         return await self.repo.get_all()
+
+    async def update(self, product_id: int, data: dict):
+        return await self.repo.update(product_id, data)
+
+    async def delete(self, product_id: int) -> bool:
+        return await self.repo.delete(product_id)

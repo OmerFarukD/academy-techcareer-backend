@@ -25,3 +25,20 @@ class ProductRepository:
             select(Product).options(selectinload(Product.images))
         )
         return list(result.scalars().all())
+
+    async def update(self, product_id: int, data: dict) -> Product | None:
+        product = await self.get(product_id)
+        if not product:
+            return None
+        for key, value in data.items():
+            setattr(product, key, value)
+        await self.db.commit()
+        return await self.get(product_id)
+
+    async def delete(self, product_id: int) -> bool:
+        product = await self.get(product_id)
+        if not product:
+            return False
+        await self.db.delete(product)
+        await self.db.commit()
+        return True

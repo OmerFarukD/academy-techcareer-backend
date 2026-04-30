@@ -11,6 +11,7 @@ class Settings(BaseSettings):
     SECRET_KEY: str
     ALGORITHM: str
     ACCESS_TOKEN_EXPIRE_MINUTES: int
+    ALLOWED_ORIGINS: list[str] = ["http://localhost:5173"]
 
     @property
     def DATABASE_URL(self) -> str:

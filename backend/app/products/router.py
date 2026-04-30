@@ -3,7 +3,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.core.database import get_db
 from app.products.repository import ProductRepository
 from app.products.service import ProductService
-from app.products.schema import ProductCreate, ProductOut
+from app.products.schema import ProductCreate, ProductUpdate, ProductOut
 
 router = APIRouter()
 
@@ -28,3 +28,22 @@ async def get_product(product_id: int, service: ProductService = Depends(get_pro
     if not product:
         raise HTTPException(status_code=404, detail="Product not found")
     return product
+
+
+@router.put("/{product_id}", response_model=ProductOut)
+async def update_product(
+    product_id: int,
+    data: ProductUpdate,
+    service: ProductService = Depends(get_product_service),
+):
+    product = await service.update(product_id, data.model_dump(exclude_unset=True))
+    if not product:
+        raise HTTPException(status_code=404, detail="Product not found")
+    return product
+
+
+@router.delete("/{product_id}", status_code=204)
+async def delete_product(product_id: int, service: ProductService = Depends(get_product_service)):
+    deleted = await service.delete(product_id)
+    if not deleted:
+        raise HTTPException(status_code=404, detail="Product not found")

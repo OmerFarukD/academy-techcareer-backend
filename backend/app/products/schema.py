@@ -9,6 +9,13 @@ class ProductCreate(BaseModel):
     category_id: int
 
 
+class ProductUpdate(BaseModel):
+    name: str | None = None
+    description: str | None = None
+    price: float | None = None
+    category_id: int | None = None
+
+
 class ProductOut(BaseModel):
     id: int
     name: str
