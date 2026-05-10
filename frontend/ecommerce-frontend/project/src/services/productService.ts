@@ -25,4 +25,11 @@ export const productService = {
   async delete(id: number): Promise<void> {
     await apiClient.delete(`/products/${id}`);
   },
+
+  async uploadImage(productId: number, file: File): Promise<any> {
+    const formData = new FormData();
+    formData.append('file', file);
+    const { data } = await apiClient.post(`/product-images/${productId}`, formData);
+    return data;
+  },
 };

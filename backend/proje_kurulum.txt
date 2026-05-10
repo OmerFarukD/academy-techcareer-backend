@@ -1,0 +1,20 @@
+
+Proje için veri tabanında çalıştırılacak Docker komutu:
+
+cmd Komutu:
+docker volume create ecommerce_pgdata && docker run -d --name ecommerce_postgres --restart unless-stopped -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=123456 -e POSTGRES_DB=ecommerce_db -p 5433:5432 -v ecommerce_pgdata:/var/lib/postgresql/data postgres:16-alpine
+
+PowerShell Komutu:
+docker volume create ecommerce_pgdata; docker run -d --name ecommerce_postgres --restart unless-stopped -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=123456 -e POSTGRES_DB=ecommerce_db -p 5433:5432 -v ecommerce_pgdata:/var/lib/postgresql/data postgres:16-alpine
+
+
+
+
+Backend Sunucu ayağa kaldırma Komutu : 
+ cd C:\Users\omerc\Desktop\n8n-e-commerce\academy-techcareer-backend\backend
+  venv\Scripts\activate
+  uvicorn main:app --reload --host 0.0.0.0 --port 8000
+
+
+  Frontend Client ayağa kaldırma komutu : 
+  npm run dev

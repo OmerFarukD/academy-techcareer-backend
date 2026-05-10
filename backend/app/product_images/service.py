@@ -13,7 +13,7 @@ class ProductImageService:
 
     async def upload(self, product_id: int, file: UploadFile):
         os.makedirs(UPLOAD_DIR, exist_ok=True)
-        ext = file.filename.rsplit(".", 1)[-1] if "." in file.filename else "bin"
+        ext = file.filename.rsplit(".", 1)[-1] if file.filename and "." in file.filename else "bin"
         filename = f"{uuid.uuid4()}.{ext}"
         filepath = os.path.join(UPLOAD_DIR, filename)
         async with aiofiles.open(filepath, "wb") as f:

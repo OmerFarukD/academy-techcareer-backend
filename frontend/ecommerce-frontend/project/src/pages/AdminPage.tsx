@@ -95,7 +95,9 @@ export default function AdminPage() {
   const [addOpen, setAddOpen] = useState(false);
   const [adding, setAdding] = useState(false);
   const [editForm, setEditForm] = useState({ name: '', price: '', description: '', category_id: '' });
+  const [editFile, setEditFile] = useState<File | null>(null);
   const [addForm, setAddForm] = useState({ name: '', price: '', description: '', category_id: '' });
+  const [addFile, setAddFile] = useState<File | null>(null);
   const [snack, setSnack] = useState<{ open: boolean; msg: string; type: 'success' | 'error' }>({
     open: false, msg: '', type: 'success',
   });
@@ -119,6 +121,7 @@ export default function AdminPage() {
         description: editTarget.description ?? '',
         category_id: String(editTarget.category_id ?? ''),
       });
+      setEditFile(null);
     }
   }, [editTarget]);
 
@@ -160,12 +163,16 @@ export default function AdminPage() {
     if (!editTarget) return;
     setSaving(true);
     try {
-      const updated = await productService.update(editTarget.id, {
+      let updated = await productService.update(editTarget.id, {
         name: editForm.name,
         price: Number(editForm.price),
         description: editForm.description,
         category_id: Number(editForm.category_id),
       });
+      if (editFile) {
+        await productService.uploadImage(updated.id, editFile);
+        updated = await productService.getById(updated.id);
+      }
       setProducts((prev) => prev.map((p) => (p.id === updated.id ? updated : p)));
       setSnack({ open: true, msg: 'Product updated', type: 'success' });
       setEditTarget(null);
@@ -179,16 +186,21 @@ export default function AdminPage() {
   const handleAdd = async () => {
     setAdding(true);
     try {
-      const created = await productService.create({
+      let created = await productService.create({
         name: addForm.name,
         price: Number(addForm.price),
         description: addForm.description,
         category_id: Number(addForm.category_id),
       });
+      if (addFile) {
+        await productService.uploadImage(created.id, addFile);
+        created = await productService.getById(created.id);
+      }
       setProducts((prev) => [...prev, created]);
       setSnack({ open: true, msg: 'Product created', type: 'success' });
       setAddOpen(false);
       setAddForm({ name: '', price: '', description: '', category_id: '' });
+      setAddFile(null);
     } catch {
       setSnack({ open: true, msg: 'Create failed', type: 'error' });
     } finally {
@@ -404,6 +416,13 @@ export default function AdminPage() {
               </Select>
             </FormControl>
             <TextField label="Description" value={editForm.description} onChange={(e) => setEditForm((f) => ({ ...f, description: e.target.value }))} fullWidth multiline rows={3} />
+            <Box>
+              <Button variant="outlined" component="label" fullWidth sx={{ textTransform: 'none' }}>
+                Upload New Image
+                <input type="file" hidden accept="image/*" onChange={(e) => setEditFile(e.target.files?.[0] || null)} />
+              </Button>
+              {editFile && <Typography variant="caption" sx={{ mt: 1, display: 'block', color: 'primary.main' }}>Selected: {editFile.name}</Typography>}
+            </Box>
           </Box>
         </DialogContent>
         <DialogActions>
@@ -428,6 +447,13 @@ export default function AdminPage() {
               </Select>
             </FormControl>
             <TextField label="Description" value={addForm.description} onChange={(e) => setAddForm((f) => ({ ...f, description: e.target.value }))} fullWidth multiline rows={3} />
+            <Box>
+              <Button variant="outlined" component="label" fullWidth sx={{ textTransform: 'none' }}>
+                Upload Image
+                <input type="file" hidden accept="image/*" onChange={(e) => setAddFile(e.target.files?.[0] || null)} />
+              </Button>
+              {addFile && <Typography variant="caption" sx={{ mt: 1, display: 'block', color: 'primary.main' }}>Selected: {addFile.name}</Typography>}
+            </Box>
           </Box>
         </DialogContent>
         <DialogActions>
